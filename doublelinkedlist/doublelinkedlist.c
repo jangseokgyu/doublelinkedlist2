@@ -55,22 +55,24 @@ void insertAt(DLL *list, int index, Node *newnode) {
 		newnode->next = list->head;
 		list->head->prev = newnode;
 		list->head = newnode;
+		list->size++;
 	}
 	else {
-		for (int i = 0; i < index; i++) {
+		for (int i = 0; i < index-1; i++) {
 			temp = temp->next;
 		}
 
-		temp->val = newnode->val;
 		newnode->prev = temp;
 		newnode->next = temp->next;
 		temp->next = newnode->next;
-
-		if (temp->next != NULL)
-			temp->next->prev = temp;
+		temp->next->prev = newnode;
+		temp->next = newnode;
+		list->size++;
 	}
-
-	list->size++;
+	/*
+	if (temp->next != NULL)
+		temp->next->prev = temp;
+		*/
 }
 
 void deleteAt(DLL *list, int index) {
@@ -83,8 +85,10 @@ void deleteAt(DLL *list, int index) {
 	}
 	else if (index == 0) {
 		temp->next->prev = NULL;
-		free(temp);
+		list->head = temp->next;
+		list->size--;
 	}
+
 	else {
 		for (int i = 0; i < index; i++) {
 			temp = temp->next;
@@ -93,12 +97,13 @@ void deleteAt(DLL *list, int index) {
 		temp->prev->next = temp->next;
 		temp->next->prev = temp->prev;
 		free(temp);
+
+		list->size--;
 	}
-	/*
-	if (temp->next != NULL)
+	/*if (temp->next != NULL)
 		temp->next->prev = temp;
 		*/
-	list->size--;
+		
 }
 
 void print(DLL *list) {
@@ -135,15 +140,16 @@ int main() {
 		append(list, newnode(i));
 	}
 	print(list);
-
+	/*
 	deleteAt(list, -1);
 	deleteAt(list, 5);
+	deleteAt(list, 0);
 	print(list);
 	deleteAt(list, 2);
 	print(list);
 	deleteAt(list, 2);
 	print(list);
-
+	*/
 	insertAt(list, -1, newnode(6));
 	insertAt(list, 3, newnode(6));
 	insertAt(list, 0, newnode(7));
@@ -153,8 +159,6 @@ int main() {
 	insertAt(list, 4, newnode(9));
 	print(list);
 	print_reverse(list);
-
-	return 0;
 
 	return 0;
 }
