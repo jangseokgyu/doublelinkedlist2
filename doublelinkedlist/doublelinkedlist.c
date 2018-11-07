@@ -49,7 +49,7 @@ void insertAt(DLL *list, int index, Node *newnode) {
 	struct Node* temp = list->head;
 
 	if (index < 0 || index > list->size) {
-		printf("out of range\n");
+		printf("INSERT ERROR: Out of Bound\n");
 	}
 	else if (index == 0) {
 		newnode->next = list->head;
@@ -57,7 +57,7 @@ void insertAt(DLL *list, int index, Node *newnode) {
 		list->head = newnode;
 		list->size++;
 	}
-	else if (index  == list->size) {
+	else if (index == list->size) {
 		while (temp->next != NULL) {
 			temp = temp->next;
 		}
@@ -67,7 +67,7 @@ void insertAt(DLL *list, int index, Node *newnode) {
 		list->size++;
 	}
 	else {
-		for (int i = 0; i < index-1; i++) {
+		for (int i = 0; i < index - 1; i++) {
 			temp = temp->next;
 		}
 
@@ -90,7 +90,7 @@ void deleteAt(DLL *list, int index) {
 	struct Node* temp = list->head;
 
 	if (index < 0 || index >= list->size) {
-		printf("out of range\n");
+		printf("DELETE ERROR: Out of Bound\n");
 	}
 	else if (index == 0) {
 		temp->next->prev = NULL;
@@ -121,7 +121,7 @@ void deleteAt(DLL *list, int index) {
 	/*if (temp->next != NULL)
 		temp->next->prev = temp;
 		*/
-		
+
 }
 
 void print(DLL *list) {
