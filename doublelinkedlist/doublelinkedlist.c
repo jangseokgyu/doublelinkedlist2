@@ -88,6 +88,15 @@ void deleteAt(DLL *list, int index) {
 		list->head = temp->next;
 		list->size--;
 	}
+	else if (index + 1 == list->size) {
+		while (temp->next != NULL) {
+			temp = temp->next;
+		}
+		temp->prev->next = NULL;
+		free(temp);
+
+		list->size--;
+	}
 
 	else {
 		for (int i = 0; i < index; i++) {
@@ -140,7 +149,7 @@ int main() {
 		append(list, newnode(i));
 	}
 	print(list);
-	/*
+
 	deleteAt(list, -1);
 	deleteAt(list, 5);
 	deleteAt(list, 0);
@@ -149,7 +158,7 @@ int main() {
 	print(list);
 	deleteAt(list, 2);
 	print(list);
-	*/
+
 	insertAt(list, -1, newnode(6));
 	insertAt(list, 3, newnode(6));
 	insertAt(list, 0, newnode(7));
