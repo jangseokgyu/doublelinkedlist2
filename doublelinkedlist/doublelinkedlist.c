@@ -48,13 +48,22 @@ void insertAt(DLL *list, int index, Node *newnode) {
 
 	struct Node* temp = list->head;
 
-	if (index < 0 || index >= list->size) {
+	if (index < 0 || index > list->size) {
 		printf("out of range\n");
 	}
 	else if (index == 0) {
 		newnode->next = list->head;
 		list->head->prev = newnode;
 		list->head = newnode;
+		list->size++;
+	}
+	else if (index  == list->size) {
+		while (temp->next != NULL) {
+			temp = temp->next;
+		}
+		newnode->prev = temp;
+		newnode->next = NULL;
+		temp->next = newnode;
 		list->size++;
 	}
 	else {
