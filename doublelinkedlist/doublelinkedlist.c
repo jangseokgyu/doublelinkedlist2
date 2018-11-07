@@ -76,19 +76,29 @@ void insertAt(DLL *list, int index, Node *newnode) {
 void deleteAt(DLL *list, int index) {
 	//save reference to first link
 
-	struct Node* temp = (Node *)malloc(sizeof(Node));
+	struct Node* temp = list->head;
 
-	//if only one link
-	if (list->head->next == NULL) {
-		list->head->prev = NULL;
+	if (index < 0 || index >= list->size) {
+		printf("out of range\n");
+	}
+	else if (index == 0) {
+		temp->next->prev = NULL;
+		free(temp);
 	}
 	else {
-		list->head->next->prev = NULL;
-	}
+		for (int i = 0; i < index; i++) {
+			temp = temp->next;
+		}
 
-	list->head = list->head->next;
-	//return the deleted link
-	return;
+		temp->prev->next = temp->next;
+		temp->next->prev = temp->prev;
+		free(temp);
+	}
+	/*
+	if (temp->next != NULL)
+		temp->next->prev = temp;
+		*/
+	list->size--;
 }
 
 void print(DLL *list) {
@@ -124,17 +134,27 @@ int main() {
 	for (i = 1; i < 6; i++) {
 		append(list, newnode(i));
 	}
-
 	print(list);
 
+	deleteAt(list, -1);
+	deleteAt(list, 5);
+	print(list);
+	deleteAt(list, 2);
+	print(list);
+	deleteAt(list, 2);
+	print(list);
 
-	insertAt(list, 0, newnode(6));
+	insertAt(list, -1, newnode(6));
+	insertAt(list, 3, newnode(6));
+	insertAt(list, 0, newnode(7));
 	print(list);
 	insertAt(list, 1, newnode(8));
 	print(list);
 	insertAt(list, 4, newnode(9));
 	print(list);
 	print_reverse(list);
+
+	return 0;
 
 	return 0;
 }
