@@ -46,9 +46,9 @@ void append(DLL *list, Node *newnode) {
 
 void insertAt(DLL *list, int index, Node *newnode) {
 
-	struct Node* temp = (Node *)malloc(sizeof(Node));
+	struct Node* temp = list->head;
 
-	if (index < 0 || index >= list->size + 1) {
+	if (index < 0 || index >= list->size) {
 		printf("out of range\n");
 	}
 	else if (index == 0) {
@@ -57,18 +57,21 @@ void insertAt(DLL *list, int index, Node *newnode) {
 		list->head = newnode;
 	}
 	else {
-		while (index-- >= 0) {
+		for (int i = 0; i < index; i++) {
 			temp = temp->next;
 		}
 
 		temp->val = newnode->val;
-		temp->next = list->head->next + index;
-		list->head->next = temp;
-		temp->prev = list->head;
+		newnode->prev = temp;
+		newnode->next = temp->next;
+		temp->next->prev = newnode;
+		temp->next = newnode;
 
 		if (temp->next != NULL)
 			temp->next->prev = temp;
 	}
+
+	list->size++;
 }
 
 void deleteAt(DLL *list, int index) {
@@ -126,9 +129,7 @@ int main() {
 	print(list);
 
 
-	insertAt(list, -1, newnode(6));
-	insertAt(list, 3, newnode(6));
-	insertAt(list, 0, newnode(7));
+	insertAt(list, 0, newnode(6));
 	print(list);
 	insertAt(list, 1, newnode(8));
 	print(list);
