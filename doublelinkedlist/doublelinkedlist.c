@@ -64,8 +64,7 @@ void insertAt(DLL *list, int index, Node *newnode) {
 		temp->val = newnode->val;
 		newnode->prev = temp;
 		newnode->next = temp->next;
-		temp->next->prev = newnode;
-		temp->next = newnode;
+		temp->next = newnode->next;
 
 		if (temp->next != NULL)
 			temp->next->prev = temp;
