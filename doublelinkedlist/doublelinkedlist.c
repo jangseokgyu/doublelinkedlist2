@@ -1,0 +1,140 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+	int val;
+	struct Node *prev;
+	struct Node *next;
+} Node;
+
+typedef struct {
+	Node *head;
+	int size;
+} DLL;
+
+Node *newnode(int n)
+{
+	Node *temp = (Node *)malloc(sizeof(Node));
+	temp->val = n;
+	temp->prev = NULL;
+	temp->next = NULL;
+	return temp;
+}
+
+DLL *newDLL() {
+	DLL *temp = (DLL *)malloc(sizeof(DLL));
+	temp->head = NULL;
+	temp->size = 0;
+	return temp;
+}
+
+void append(DLL *list, Node *newnode) {
+	struct Node* temp = list->head;
+	struct Node* newNode = newnode;
+	if (list->head == NULL) {
+		list->head = newNode;
+		return;
+	}
+	while (temp->next != NULL) temp = temp->next;
+	temp->next = newNode;
+	newNode->prev = temp;
+}
+
+void insertAt(DLL *list, int index, Node *newnode) {
+
+	struct Node* temp = (Node *)malloc(sizeof(Node));
+	if (index < 0 || index >= sizeof(DLL)) {
+		printf("out of range\n");
+		return;
+	}
+	else if (index == 0) {
+		newnode->next = list->head;
+		list->head->prev = newnode;
+		list->head = newnode;
+	}
+	else {
+		temp->val = newnode->val;
+		temp->next = list->head->next + index;
+		list->head->next = temp;
+		temp->prev = list->head;
+
+		if (temp->next != NULL)
+			temp->next->prev = temp;
+	}
+}
+
+
+void deleteAt(DLL *list, int index) {
+	//save reference to first link
+
+	struct Node* temp = (Node *)malloc(sizeof(Node));
+
+	//if only one link
+	if (list->head->next == NULL) {
+		list->head->prev = NULL;
+	}
+	else {
+		list->head->next->prev = NULL;
+	}
+
+	list->head = list->head->next;
+	//return the deleted link
+	return;
+}
+
+void print(DLL *list) {
+	struct Node* temp = list->head;
+	printf("Forward: ");
+	while (temp != NULL) {
+		printf("[%d] ", temp->val);
+		temp = temp->next;
+	}
+	printf("\n");
+}
+
+void print_reverse(DLL *list) {
+	struct Node* temp = list->head;
+	if (temp == NULL) return; // empty list, exit
+	// Going to last Node
+	while (temp->next != NULL) {
+		temp = temp->next;
+	}
+	// Traversing backward using prev pointer
+	printf("Reverse: ");
+	while (temp != NULL) {
+		printf("[%d] ", temp->val);
+		temp = temp->prev;
+	}
+	printf("\n");
+}
+
+int main() {
+	DLL *list = newDLL();
+	int i;
+	for (i = 1; i < 6; i++) {
+		append(list, newnode(i));
+	}
+
+	print(list);
+
+	deleteAt(list, -1);
+	deleteAt(list, 5);
+	deleteAt(list, 0);
+	print(list);
+	deleteAt(list, 2);
+	print(list);
+	deleteAt(list, 2);
+	print(list);
+
+	insertAt(list, -1, newnode(6));
+	insertAt(list, 3, newnode(6));
+	insertAt(list, 0, newnode(7));
+	print(list);
+	insertAt(list, 1, newnode(8));
+	print(list);
+	insertAt(list, 4, newnode(9));
+	print(list);
+	print_reverse(list);
+
+	return 0;
+}
