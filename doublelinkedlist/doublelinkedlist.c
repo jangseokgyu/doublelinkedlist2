@@ -33,9 +33,13 @@ void append(DLL *list, Node *newnode) {
 	struct Node* newNode = newnode;
 	if (list->head == NULL) {
 		list->head = newNode;
+		list->size++;
 		return;
 	}
-	while (temp->next != NULL) temp = temp->next;
+	while (temp->next != NULL) {
+		temp = temp->next;
+	}
+	list->size++;
 	temp->next = newNode;
 	newNode->prev = temp;
 }
@@ -43,9 +47,9 @@ void append(DLL *list, Node *newnode) {
 void insertAt(DLL *list, int index, Node *newnode) {
 
 	struct Node* temp = (Node *)malloc(sizeof(Node));
-	if (index < 0 || index >= sizeof(DLL)) {
+
+	if (index < 0 || index >= list->size + 1) {
 		printf("out of range\n");
-		return;
 	}
 	else if (index == 0) {
 		newnode->next = list->head;
@@ -53,6 +57,10 @@ void insertAt(DLL *list, int index, Node *newnode) {
 		list->head = newnode;
 	}
 	else {
+		while (index-- >= 0) {
+			temp = temp->next;
+		}
+
 		temp->val = newnode->val;
 		temp->next = list->head->next + index;
 		list->head->next = temp;
@@ -62,7 +70,6 @@ void insertAt(DLL *list, int index, Node *newnode) {
 			temp->next->prev = temp;
 	}
 }
-
 
 void deleteAt(DLL *list, int index) {
 	//save reference to first link
@@ -108,6 +115,7 @@ void print_reverse(DLL *list) {
 	printf("\n");
 }
 
+
 int main() {
 	DLL *list = newDLL();
 	int i;
@@ -117,14 +125,6 @@ int main() {
 
 	print(list);
 
-	deleteAt(list, -1);
-	deleteAt(list, 5);
-	deleteAt(list, 0);
-	print(list);
-	deleteAt(list, 2);
-	print(list);
-	deleteAt(list, 2);
-	print(list);
 
 	insertAt(list, -1, newnode(6));
 	insertAt(list, 3, newnode(6));
